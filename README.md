@@ -98,6 +98,46 @@ echo '3 mensaje desde freebsd' | nc -4u -w1 192.168.56.201 5555
 ```
 
 
+## rsyslogd por UDP
+
+En la máquina linux (ubuntuserver3) configuramos:
+
+/etc/rsyslog.d/graylog.conf:
+
+```
+# Double @@ is for TCP whereas a single @ is for UDP
+#*.* @@localhost:5140;RSYSLOG_SyslogProtocol23Format
+*.* @localhost:5140;RSYSLOG_SyslogProtocol23Format
+```
+
+Probamos primero por UDP ya que es mucho más rápido (menos fiable).
+
+El input debe tener las siguientes características:
+
+* syslog udp 
+* port: 5140
+
+# Retention
+
+Para ajustar la retención de logs en graylog y que no ocupe mucho.
+
+https://stackoverflow.com/questions/37313445/graylog2-how-to-config-logs-retention-to-1-week
+
+En el menú:
+
+System/Configurations > Configurations
+    Index Set Defaults -> Edit Configuration
+
+    Index Rotation Configuration:
+        Select Rotation Strategy:   Index Time
+        Rotation Period:            P1D (un índice por día)
+
+    Index Retention Configuration:
+        Select Rotation Strategy:   Delete Index 
+        Max Number of Indices:      8
+
+Con la configuración anterior habrá 8 indices de OpenSearch,
+uno por día. Indices más antiguos de 8 dias se borran.
 
 
 
