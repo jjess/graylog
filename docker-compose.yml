@@ -37,6 +37,8 @@ services:
       - mongodb
     entrypoint: "/usr/bin/tini -- wait-for-it opensearch:9200 --  /docker-entrypoint.sh"
     environment:
+      TZ: Europe/Madrid
+      GRAYLOG_ROOT_TIMEZONE: "Europe/Madrid"
       GRAYLOG_NODE_ID_FILE: "/usr/share/graylog/data/config/node-id"
       #GRAYLOG_PASSWORD_SECRET: "${GRAYLOG_PASSWORD_SECRET:?Please configure GRAYLOG_PASSWORD_SECRET in the .env file}"
       #GRAYLOG_ROOT_PASSWORD_SHA2: "${GRAYLOG_ROOT_PASSWORD_SHA2:?Please configure GRAYLOG_ROOT_PASSWORD_SHA2 in the .env file}"
@@ -62,6 +64,7 @@ services:
     volumes:
       - graylog_data:/usr/share/graylog/data/data
       - graylog_journal:/usr/share/graylog/data/journal
+      - graylog_plugin:/usr/share/graylog/plugin
     #restart: "on-failure"
     restart: always
 
@@ -73,5 +76,7 @@ volumes:
   graylog_data:
     driver: local 
   graylog_journal:
+    driver: local
+  graylog_plugin:
     driver: local
 

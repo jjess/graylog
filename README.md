@@ -140,5 +140,24 @@ Con la configuración anterior habrá 8 indices de OpenSearch,
 uno por día. Indices más antiguos de 8 dias se borran.
 
 
+Para la API de graylog basta crear un usuario con role Reader.
+Al usuario hay que crearle un token.
+
+La llamada a la API para traer los eventos:
+
+```
+curl --location 'http://192.168.56.201:9001/api/events/search' \
+--header 'X-Requested-By: postman' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic MXJhZzVqZjV2b3Y5cnAwNDBqNGk1N2RjcmdvNjFodDZ2OXM4YnRzZjhmMzE2N3RldTJtMTp0b2tlbg==' \
+--data '{
+    "query" : "session opened for user root" ,
+    "timerange": {
+        "type": "relative",
+        "range": 30000
+        }
+    }'
+```
+
 
 
